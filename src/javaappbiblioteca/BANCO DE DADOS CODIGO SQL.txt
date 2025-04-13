@@ -1,14 +1,14 @@
 CREATE DATABASE Biblioteca;
 
 CREATE TABLE livro(
-	titulo VarChar(50) NOT NULL,
-	sinopse VarChar(200) NOT NULL,
+	titulo VarChar(100) NOT NULL,
+	sinopse Text NOT NULL,
 	genero VarChar(30) NOT NULL,
-	publicoAlvo VarChar(30) NOT NULL,
-	autor VarChar(50) NOT NULL,
-	editora VarChar(50) NOT NULL,
-	ISBN Char(13) NOT NULL,
-	andar VarChar(20) NOT NULL,
+	publicoAlvo VarChar(40) NOT NULL,
+	autor VarChar(100) NOT NULL,
+	editora VarChar(100) NOT NULL,
+	ISBN Char(14) NOT NULL,
+	andar VarChar(10) NOT NULL,
 	corredor int NOT NULL,
 	anoLancamento int, 
 	CONSTRAINT PK_ISBN PRIMARY KEY (ISBN)

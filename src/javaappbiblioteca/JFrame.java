@@ -4,8 +4,11 @@
  */
 package javaappbiblioteca;
 
+import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 /**
  *
  * @author Joao
@@ -54,6 +57,9 @@ public class JFrame extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gerenciador dos Livros da Biblioteca");
+
+        jPanel1.setName(""); // NOI18N
 
         jButton3.setText("Sair");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -244,15 +250,25 @@ public class JFrame extends javax.swing.JFrame {
         //CONEXÃO BANCO SQL
         try{
             Class.forName("com.mysql.cj.jdbc.Driver"); 
-            //ALTERAR O caminho do banco de dados
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/BANCODEDADOS", "root", "");
+            //Conectando ao banco de dados
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Biblioteca", "root", "");
             
-            Statement stmt = conn.createStatement();
+            Statement comando = conn.createStatement();
             //Adicionar mensagem formatada corretamente, com todos os campos corretamentes
-            String sql = "insert into livro () values('" + "')";
-            stmt.executeUpdate(sql);
-            stmt.close();
-            JOptionPane.showMessageDialog(null, "Registro incluído com sucesso no banco de !", "Status do livro", JOptionPane.INFORMATION_MESSAGE);
+            String sql = "insert into livro (titulo, sinopse, genero, publicoAlvo, autor, editora, ISBN, andar, corredor, anoLancamento) values('" + livro.getTitulo() +
+                                            "', '" + livro.getSinopse() +
+                                            "', '" + livro.getGenero() +
+                                            "', '" + livro.getPublicoAlvo() +
+                                            "', '" + livro.getAutor() +
+                                            "', '" + livro.getEditora() +
+                                            "', '" + livro.getISBN() +
+                                            "', '" + livro.getAndar() +
+                                            "', '" + livro.getCorredor() +
+                                            "', '" + livro.getAnoLancamento() +
+                                            "')";
+            comando.executeUpdate(sql);
+            comando.close();
+            JOptionPane.showMessageDialog(null, "Registro incluído com sucesso no banco de dados!", "Status do livro", JOptionPane.INFORMATION_MESSAGE);
             
         } catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex, "Erro - SQL", JOptionPane.WARNING_MESSAGE);
@@ -263,6 +279,60 @@ public class JFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         //BOTAO CONSULTAR
+        try {
+        Class.forName("com.mysql.cj.jdbc.Driver"); 
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Biblioteca", "root", "");
+        Statement comando = conn.createStatement();
+        String sql = "select * from livro";
+        //MENSAGEM
+        //Mensagem funcionando, mas sinopse muito grande, por isso vamos reduzir o tamanho da janela, quebre linhas e permitir que tenha scroll
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        //NECESSARIO CONSTRUIR UMA STRING COM O RESULTADO, ELE NÃO PASSA UM STRING LEGIVEL
+        ResultSet resultado = comando.executeQuery(sql);
+        //Construtor de Strings, faz a concatenação dos dados do bando de dados
+        StringBuilder mensagem = new StringBuilder();
+        while (resultado.next()) {
+            
+            String titulo = resultado.getString("titulo");
+            String sinopse = resultado.getString("sinopse");
+            String genero = resultado.getString("genero");
+            String publicoAlvo = resultado.getString("publicoAlvo");
+            String autor = resultado.getString("autor");
+            String editora = resultado.getString("editora");
+            String ISBN = resultado.getString("ISBN");
+            String andar = resultado.getString("andar");
+            int corredor = resultado.getInt("corredor");
+            int anoLancamento = resultado.getInt("anoLancamento");
+            
+            mensagem.append("ISBN: ").append(ISBN)
+                    .append(", \nTítulo: ").append(titulo)
+                    .append(", \nSinopse: ").append(sinopse)
+                    .append(", \nAutor: ").append(autor)
+                    .append(", \nEditora: ").append(editora)
+                    .append(", \nAno de Lançamento: ").append(anoLancamento)
+                    .append(", \nPublico Alvo: ").append(publicoAlvo)
+                    .append(", \nGênero: ").append(genero)
+                    .append(", \nAndar: ").append(andar)
+                    .append(", \nCorredor: ").append(corredor)
+                    .append("\n---------------------------------------------------------------------------------------------------------------\n");
+        }
+        //Adicionando todo o texto da mensagem dentro do componente textArea
+        textArea.setText(mensagem.toString());
+        //ScrollPane para poder scrollar  a tela
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        
+        comando.close(); 
+        resultado.close();
+        
+        //POPUP
+        JOptionPane.showMessageDialog(null, scrollPane, "Consulta de todos os livros", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e, "Erro - SQL", JOptionPane.WARNING_MESSAGE);
+        }
         //Podemos Criar um popup, showmessageDialog com um Select * from livro, ou ver outro jeito de apresentar as informações
     }//GEN-LAST:event_jButton2ActionPerformed
 
