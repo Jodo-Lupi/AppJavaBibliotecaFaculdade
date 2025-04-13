@@ -10,20 +10,20 @@ package javaappbiblioteca;
  */
 public class Biblioteca {
     private String titulo;
-    private String descricao;
-    private String categoria;
+    private String sinopse;
+    private String genero;
     private String publicoAlvo;
     private String autor;
     private String editora;
     private String ISBN;
-    private int andar;
+    private String andar;
     private int corredor;
     private int anoLancamento;
 
-    public Biblioteca(String titulo, String descricao, String categoria, String publicoAlvo, String autor, String editora, String ISBN, int andar, int corredor, int anoLancamento) {
+    public Biblioteca(String titulo, String sinopse, String genero, String publicoAlvo, String autor, String editora, String ISBN, String andar, int corredor, int anoLancamento) {
         this.titulo = titulo;
-        this.descricao = descricao;
-        this.categoria = categoria;
+        this.sinopse = sinopse;
+        this.genero = genero;
         this.publicoAlvo = publicoAlvo;
         this.autor = autor;
         this.editora = editora;
@@ -45,20 +45,20 @@ public class Biblioteca {
         this.titulo = titulo;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getSinopse() {
+        return sinopse;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setSinopse(String sinopse) {
+        this.sinopse = sinopse;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public String getPublicoAlvo() {
@@ -93,11 +93,11 @@ public class Biblioteca {
         this.ISBN = ISBN;
     }
 
-    public int getAndar() {
+    public String getAndar() {
         return andar;
     }
 
-    public void setAndar(int andar) {
+    public void setAndar(String andar) {
         this.andar = andar;
     }
 
